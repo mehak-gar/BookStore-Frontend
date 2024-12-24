@@ -1,37 +1,34 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
-import axios from "axios";
-import { toast } from "react-toastify";
-import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 // ** Icons Imports
 
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import Box, { BoxProps } from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Checkbox from "@mui/material/Checkbox";
-import FormControl from "@mui/material/FormControl";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import {
   Button,
   CircularProgress,
-  FormControlLabel,
   FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  Typography,
+  Typography
 } from "@mui/material";
+import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
 
-import MuiLink from "@mui/material/Link";
 import Link from "next/link";
-
+import axios from "axios";
+import { toast } from "react-toastify";
+import ReactToast from "@/utils/toast";
+interface usertype{fullname:string,email:string,password:string,role:string}
 const schema = yup.object().shape({
   fullname: yup.string().required("Username is required"),
   email: yup.string().required("Email is required"),
@@ -44,9 +41,10 @@ const SignIn = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const {
-    reset,
+    // reset,
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -59,18 +57,21 @@ const SignIn = () => {
     resolver: yupResolver(schema),
   });
   const router = useRouter();
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: usertype) => {
+    console.log('data: ', data);
     setLoading(true);
     try {
-      const response = await axios.post(`http://localhost:4001/user/signup`, {
+      await axios.post(`${process.env.BASE_API_URL}user/signup`, {
         fullname: data.fullname,
         email: data.email,
         password: data.password,
         role:data.role,
       });
 
-      toast.success("You are logged into your account!", {
+      ReactToast({
+        message: "🎉 Welcome! Thanks for Signing up!",
         position: "top-center",
+        autoclose: 3000,
       });
 
       reset();

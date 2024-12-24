@@ -1,19 +1,17 @@
-import { createAsyncThunk, createSlice, Dispatch } from "@reduxjs/toolkit";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { AppDispatch } from "..";
-import { useProductDrawer } from "@/context/ProductDrawerContext";
-interface Redux {
-  getState: any;
-  dispatch: Dispatch<any>;
-  rejectWithValue: (value: any) => void;
+interface Params{
+  category?:'string',
+  page?:number,
+  recordsperpage?:number
 }
 // eslint-disable-next-line react-hooks/rules-of-hooks
 
 export const getAllProducts = createAsyncThunk(
   "products/getAllProducts",
-  async (params: any, { dispatch, rejectWithValue }) => {
+  async (params: Params, {  }) => {
     const categoryquery=params?.category ? `&category=${params?.category}` : '';
     const res = await axios.get(`http://localhost:4001/book?page=${params?.page}&recordsperpage=${params?.recordsperpage}${categoryquery}`);
     if (res) {
@@ -28,7 +26,7 @@ export const getAllProducts = createAsyncThunk(
 );
 export const getProduct = createAsyncThunk(
   "products/getProduct",
-  async (params: any, { dispatch, rejectWithValue }) => {
+  async (params: any, {  }) => {
     const res = await axios.get(`http://localhost:4001/book/${params}`);
     if (res) {
       return res;
@@ -61,7 +59,7 @@ dispatch(uiProductUpdate({addProduct:{open:false}}))
 
 export const updateProduct = createAsyncThunk(
   "products/UpdateProduct",
-  async (params: { data: any; id: any }, { dispatch, rejectWithValue }) => {
+  async (params: { data: any; id: any }, { dispatch }) => {
     const res = await axios.put(
       `http://localhost:4001/book/${params?.id}`,
       params?.data
@@ -81,7 +79,7 @@ export const updateProduct = createAsyncThunk(
 
 export const deleteProduct = createAsyncThunk(
   "products/DeleteProduct",
-  async (params:any, { dispatch, rejectWithValue }) => {
+  async (params:any, { dispatch }) => {
     console.log('params: ', params);
     const res = await axios.delete(
       `http://localhost:4001/book/${params}`

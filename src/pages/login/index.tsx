@@ -1,24 +1,21 @@
 
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
-import axios from "axios";
-import { toast } from "react-toastify";
-import { styled } from '@mui/material/styles';
 import { useRouter } from "next/router";
 // ** Icons Imports
 
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import Box, { BoxProps } from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { Button, CircularProgress, FormControlLabel, FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput, Typography } from "@mui/material";
+import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
-import { Button, CircularProgress, FormControlLabel, FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput, Typography } from "@mui/material";
+import TextField from '@mui/material/TextField';
 
 import MuiLink from '@mui/material/Link';
 import Link from "next/link";
@@ -33,7 +30,7 @@ const Login =() => {
     const [loading, setLoading] = useState<boolean>(false);
    
      const {
-       reset,
+      //  reset,
        control,
        handleSubmit,
        formState: { errors },
@@ -46,29 +43,30 @@ const Login =() => {
        resolver: yupResolver(schema),
      });
      const router = useRouter();
-     const onSubmit = async (data: any) => {
+     const onSubmit = async (data: {email:string,password:string}) => {
+      console.log('data: ', data);
        setLoading(true)
-       try {
-         const response = await axios.post(
-           `http://localhost:4001/user/login`,
-           {
-             email: data.email,
-             password: data.password,
-           }
-         );
+      //  try {
+      //    const response = await axios.post(
+      //      `http://localhost:4001/user/login`,
+      //      {
+      //        email: data.email,
+      //        password: data.password,
+      //      }
+      //    );
        
-         toast.success("You are logged into your account!", {
-           position: 'top-center',
-         });
-        await  sessionStorage.setItem('user', JSON.stringify(response.data.user));
+      //    toast.success("You are logged into your account!", {
+      //      position: 'top-center',
+      //    });
+      //   await  sessionStorage.setItem('user', JSON.stringify(response.data.user));
        
       
-         reset();
-         router.push('/home')
-       } catch (error) {
-         console.error(error);
-         toast.error("An error occurred. Please try again.");
-       }
+      //    reset();
+      //    router.push('/home')
+      //  } catch (error) {
+      //    console.error(error);
+      //    toast.error("An error occurred. Please try again.");
+      //  }
      };
    
      const [isClient, setIsClient] = useState(false);

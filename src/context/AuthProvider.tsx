@@ -1,9 +1,9 @@
 import React, { createContext, ReactNode, useContext, useState, useEffect } from 'react';
 
-export const AuthContext = createContext<any>(undefined);
+export const AuthContext = createContext<unknown>(undefined);
 
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [authUser, setAuthUser] = useState<any>();
+    const [authUser, setAuthUser] = useState<unknown>();
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
