@@ -19,6 +19,8 @@ import TextField from '@mui/material/TextField';
 
 import MuiLink from '@mui/material/Link';
 import Link from "next/link";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const schema = yup.object().shape({
   email: yup.string().required("Username is required"),
@@ -44,29 +46,26 @@ const Login =() => {
      });
      const router = useRouter();
      const onSubmit = async (data: {email:string,password:string}) => {
-      console.log('data: ', data);
        setLoading(true)
-      //  try {
-      //    const response = await axios.post(
-      //      `http://localhost:4001/user/login`,
-      //      {
-      //        email: data.email,
-      //        password: data.password,
-      //      }
-      //    );
+       try {
+         const response = await axios.post(
+           `http://localhost:4001/user/login`,
+           {
+             email: data.email,
+             password: data.password,
+           }
+         );
        
-      //    toast.success("You are logged into your account!", {
-      //      position: 'top-center',
-      //    });
-      //   await  sessionStorage.setItem('user', JSON.stringify(response.data.user));
-       
-      
-      //    reset();
-      //    router.push('/home')
-      //  } catch (error) {
-      //    console.error(error);
-      //    toast.error("An error occurred. Please try again.");
-      //  }
+         toast.success("You are logged into your account!", {
+           position: 'top-center',
+         });
+         console.log('response',response)
+        await  sessionStorage.setItem('token', JSON.stringify(response.data.token));
+         router.push('/home')
+       } catch (error) {
+         console.error(error);
+         toast.error("An error occurred. Please try again.");
+       }
      };
    
      const [isClient, setIsClient] = useState(false);
